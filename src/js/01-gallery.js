@@ -1,15 +1,12 @@
 // Add imports above this line
 
-import * as simpleLightbox from 'simplelightbox';
-import { galleryItems } from './gallery-items.js';
+import SimpleLightbox from 'simplelightbox';
+
 // Additional styles import
 
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import simpleLightbox from 'simplelightbox';
 
-// Change code below this line
-
-// create gallery markup
+import { galleryItems } from './gallery-items.js';
 const gallery = document.querySelector('.gallery');
 
 galleryItems.forEach(item => {
@@ -17,28 +14,33 @@ galleryItems.forEach(item => {
   listItem.classList.add('gallery__item');
 
   listItem.innerHTML = `
-    <a class="gallary__link" href="${item.original}">
-        <img
-        class="gallery__image"
-        src="${item.preview}"
-        data-source="${item.original}"
-        alt="${item.description}"
+      <a class="gallery__link" href="${item.original}">
+        <img 
+            class="gallery__image"
+            src="${item.preview}"
+            data-source="${item.original}"
+            alt="${item.description}"
         />
-    </a>
+      </a>
     `;
-
   gallery.appendChild(listItem);
 });
 
-//Even delegationn to open modal
-gallery.addEventListener('click', eventx => {
-  eventx.preventDefault();
+const optionsModal = {
+  captionsData: 'alt',
+  captionDelay: 250,
+};
 
+// Event delegation to Open Modal
+gallery.addEventListener('click', event => {
+  event.preventDefault();
   if (event.target.classList.contains('gallery__image')) {
-    const imageUrl = event.target.dataset.source;
-    const instance = simpleLightbox.create(
-      `<img src="${imageUrl}" alt="Image">`
-    );
-    instance.show();
+    const imageUrl = event.target.getAttribute('data-source');
+    let gallery = new SimpleLightbox('.gallery a', optionsModal);
+    gallery.on('show.simplelightbox', function () {
+      // Do something…
+    });
   }
 });
+
+console.log(galleryItems);
