@@ -38,6 +38,7 @@ function deserializeData(data) {
 
 function createFormState(key, value) {
   const formState = deserializeData(readLocalStorageKey(localStorageKey)) || {};
+  console.log(formState);
   formState[key] = value;
   localStorage.setItem(localStorageKey, serializeData(formState));
 }
@@ -52,31 +53,19 @@ function deleteLocalStorageKey(key) {
 // EVENT LISTENERS
 
 const timeFunction = target => {
-  form.addEventListener('input', evt => {
-    localStorage.setItem(localStorageKey, evt.target.value);
-    console.log(form.elements.message.value);
+  form.addEventListener('input', event => {
+    const { email, message } = event.currentTarget.elements;
+    localStorage.setItem(
+      localStorageKey,
+      serializeData({ email: email.value, message: message.value })
+    );
   });
 };
 
 dataFeedbackForm.form.addEventListener('input', throttle(timeFunction, 500));
 
-form.addEventListener('submit', evt => {
-  evt.preventDefault();
-  localStorage.removeItem(localStorageKey);
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  deleteLocalStorageKey(localStorageKey);
   form.reset();
 });
-
-dataFeedbackForm.form.addEventListener('submit', onFormSubmit);
-
-// EVENT HANDLERS
-
-function onFormSubmit(event) {
-  const { email, message } = event.currentTarget.elements;
-  event.preventDefault();
-
-  deleteLocalStorageKey(localStorageKey);
-
-  console.log({ email: email.value, message: message.value });
-
-  event.currentTarget.reset();
-}
