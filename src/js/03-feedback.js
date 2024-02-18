@@ -1,5 +1,7 @@
 import throttle from 'lodash.throttle';
 
+// ---------- DECLARATION ----------
+
 const form = document.querySelector('.feedback-form');
 const localStorageKey = 'feedback-form-state';
 
@@ -9,8 +11,6 @@ const dataFeedbackForm = {
   message: document.querySelector('[name="message"]'),
 };
 
-console.log(dataFeedbackForm);
-
 const formData = deserializeData(readLocalStorageKey(localStorageKey));
 
 if (formData) {
@@ -18,7 +18,7 @@ if (formData) {
   dataFeedbackForm.message.value = formData.message || '';
 }
 
-// FUNCTIONS
+// ---------- FUNCTIONS ----------
 
 function serializeData(data) {
   return JSON.stringify(data);
@@ -51,7 +51,7 @@ function deleteLocalStorageKey(key) {
   localStorage.removeItem(key);
 }
 
-const timeFunction = target => {
+const timeFunction = () => {
   form.addEventListener('input', event => {
     const { email, message } = event.currentTarget.elements;
     localStorage.setItem(
@@ -61,7 +61,7 @@ const timeFunction = target => {
   });
 };
 
-// EVENT LISTENERS
+// ---------- EVENT LISTENERS ----------
 
 dataFeedbackForm.form.addEventListener('input', throttle(timeFunction, 500));
 
