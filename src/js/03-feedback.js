@@ -50,7 +50,6 @@ function readLocalStorageKey(key) {
 function deleteLocalStorageKey(key) {
   localStorage.removeItem(key);
 }
-// EVENT LISTENERS
 
 const timeFunction = target => {
   form.addEventListener('input', event => {
@@ -62,10 +61,15 @@ const timeFunction = target => {
   });
 };
 
+// EVENT LISTENERS
+
 dataFeedbackForm.form.addEventListener('input', throttle(timeFunction, 500));
 
 form.addEventListener('submit', event => {
+  const { email, message } = event.currentTarget.elements;
   event.preventDefault();
+
+  console.log({ email: email.value, message: message.value });
   deleteLocalStorageKey(localStorageKey);
   form.reset();
 });
