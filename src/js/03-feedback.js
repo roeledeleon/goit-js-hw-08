@@ -1,6 +1,8 @@
+// ---------- IMPORT
+
 import throttle from 'lodash.throttle';
 
-// ---------- DECLARATION ----------
+// ---------- DECLARATIONS
 
 const form = document.querySelector('.feedback-form');
 const localStorageKey = 'feedback-form-state';
@@ -11,14 +13,14 @@ const dataFeedbackForm = {
   message: document.querySelector('[name="message"]'),
 };
 
-const formData = deserializeData(readLocalStorageKey(localStorageKey));
+const formData = deserializeData(readLocalStorageKey(localStorageKey)) || {};
 
 if (formData) {
   dataFeedbackForm.email.value = formData.email || '';
   dataFeedbackForm.message.value = formData.message || '';
 }
 
-// ---------- FUNCTIONS ----------
+// ---------- FUNCTIONS
 
 function serializeData(data) {
   return JSON.stringify(data);
@@ -26,7 +28,7 @@ function serializeData(data) {
 
 function deserializeData(data) {
   let deserializedData;
-  console.log(deserializedData);
+  //console.log(deserializedData);
   try {
     deserializedData = JSON.parse(data);
   } catch (error) {
@@ -34,13 +36,6 @@ function deserializeData(data) {
     console.log(error.message);
   }
   return deserializedData;
-}
-
-function createFormState(key, value) {
-  const formState = deserializeData(readLocalStorageKey(localStorageKey)) || {};
-  console.log(formState);
-  formState[key] = value;
-  localStorage.setItem(localStorageKey, serializeData(formState));
 }
 
 function readLocalStorageKey(key) {
@@ -61,7 +56,7 @@ const timeFunction = () => {
   });
 };
 
-// ---------- EVENT LISTENERS ----------
+// ---------- EVENT LISTENERS
 
 dataFeedbackForm.form.addEventListener('input', throttle(timeFunction, 500));
 
