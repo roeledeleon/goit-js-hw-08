@@ -64,6 +64,13 @@ form.addEventListener('submit', event => {
   const { email, message } = event.currentTarget.elements;
   event.preventDefault();
 
+  // check for null values
+  if (email.value == '' || message.value == '') {
+    alert('Enter both parameters!');
+    form.reset();
+    return;
+  }
+
   console.log({ email: email.value, message: message.value });
   deleteLocalStorageKey(localStorageKey);
   form.reset();
